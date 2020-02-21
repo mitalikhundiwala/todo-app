@@ -1,24 +1,25 @@
 import User from '../models/user.model';
+import { SET_INITIAL_DATA } from '../actions/app.action';
+import Todo from '../models/todo.model';
+import { AnyAction } from 'redux';
+import { IInitialData } from '../services/app.service';
 
-export interface IState {
-    users: { [key: string]: any };
-}
+export type IState = { [key: string]: User };
 
-const defaultState: IState = { users: {} };
+const defaultState: IState = {};
 
-export default (state: IState = defaultState, action) => {
+export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
-        case 'SET_INITIAL_DATA':
+        case SET_INITIAL_DATA:
+            const payload: IInitialData = action.payload;
             const users: { [key: string]: User } = {};
-            action.payload.users.forEach((user: User) => {
-                users[`${user.id}`] = new User(user);
+            payload.users?.forEach((user: User) => {
+                users[`${user.id}`] = user;
             });
             return {
                 ...state,
                 ...users
             };
-        case 'SET_USERS':
-            return action.users;
         default:
             return state;
     }

@@ -1,10 +1,2 @@
-export const setTodos = todos => ({
-    type: 'SET_TODOS',
-    todos
-});
-
-export const startSetTodos = todos => {
-    return (dispatch, getState) => {
-        dispatch(setTodos(todos));
-    };
-};
+import { Dispatch } from 'redux';
+import Todo from '../models/todo.model';

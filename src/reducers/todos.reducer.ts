@@ -1,24 +1,24 @@
-import Todo from "../models/todo.model";
+import Todo from '../models/todo.model';
+import { SET_INITIAL_DATA } from '../actions/app.action';
+import { AnyAction } from 'redux';
+import { IInitialData } from '../services/app.service';
 
-export interface IState {
-    todos: { [key: string]: any };
-}
+export type IState = { [key: string]: Todo };
 
-const defaultState: IState = { todos: {} };
+const defaultState: IState = {};
 
-export default (state: IState = defaultState, action) => {
+export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
-        case 'SET_INITIAL_DATA':
+        case SET_INITIAL_DATA:
+            const payload: IInitialData = action.payload;
             const todos: { [key: string]: Todo } = {};
-            action.payload.todos.forEach((todo: Todo) => {
-                todos[`${todo.id}`] = new Todo(todo);
+            payload.todos?.forEach((todo: Todo) => {
+                todos[`${todo.id}`] = todo;
             });
             return {
                 ...state,
                 ...todos
             };
-        case 'SET_TODOS':
-            return action.todos;
         default:
             return state;
     }

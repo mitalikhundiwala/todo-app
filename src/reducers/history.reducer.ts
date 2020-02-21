@@ -1,8 +1,12 @@
-const defaultState = [];
+import { AnyAction } from 'redux';
 
-export default (state = defaultState, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
+export type IState = any[];
+
+const defaultState: IState = [];
+
+export default (state = defaultState, action: AnyAction) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
 };
