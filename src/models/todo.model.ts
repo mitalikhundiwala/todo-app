@@ -4,7 +4,7 @@ export default class Todo {
     title: string;
     completed: boolean;
 
-    constructor(data) {
+    constructor(data: any) {
         this.id = data.id;
         this.userId = data.userId;
         this.title = data.title;
