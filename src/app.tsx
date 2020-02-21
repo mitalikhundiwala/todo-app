@@ -1,20 +1,17 @@
 import React, { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { AnyAction } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { IAppState } from './store';
-import { Spinner } from 'reactstrap';
+import { IAppState, AppThunkDispatch } from './store';
+import { Spinner, Navbar, NavbarBrand } from 'reactstrap';
 
 import { loadInitialData } from './actions/app.action';
+import UserList from './components/user-list.component';
 
 interface IProps {
     loadInitialData: () => Promise<any>;
 }
 
-const mapDispatchToProps = (
-    dispatch: ThunkDispatch<IAppState, undefined, AnyAction>
-) => ({
+const mapDispatchToProps = (dispatch: AppThunkDispatch) => ({
     loadInitialData: () => {
         return dispatch(loadInitialData());
     }
@@ -31,7 +28,14 @@ const App: React.FunctionComponent<IProps> = (props: IProps) => {
     }, []);
 
     return (
-        <div>{isLoading ? <Spinner color="primary"></Spinner> : 'Hello'}</div>
+        <>
+            <Navbar color="dark" dark>
+                <NavbarBrand href="/">WakeCap</NavbarBrand>
+            </Navbar>
+            <div className="container my-3">
+                {isLoading ? <Spinner color="primary"></Spinner> : <UserList />}
+            </div>
+        </>
     );
 };
 

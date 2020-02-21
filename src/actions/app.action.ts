@@ -1,6 +1,4 @@
 import { retrieveInitialData, IInitialData } from '../services/app.service';
-import User from '../models/user.model';
-import Todo from '../models/todo.model';
 import { AnyAction, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { IAppState } from '../store';

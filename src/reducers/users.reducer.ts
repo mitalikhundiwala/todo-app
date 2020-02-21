@@ -1,6 +1,5 @@
 import User from '../models/user.model';
 import { SET_INITIAL_DATA } from '../actions/app.action';
-import Todo from '../models/todo.model';
 import { AnyAction } from 'redux';
 import { IInitialData } from '../services/app.service';
 

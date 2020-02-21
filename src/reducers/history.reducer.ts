@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
+import TodoHistory from '../models/history';
 
-export type IState = any[];
+export type IState = TodoHistory[];
 
 const defaultState: IState = [];
 
