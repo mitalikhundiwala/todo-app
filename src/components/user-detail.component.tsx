@@ -17,12 +17,13 @@ import { IAppState } from '../store';
 import { getTodos } from '../selectors/todos.selector';
 import Todo from '../models/todo.model';
 import { connect } from 'react-redux';
+import TodoList from './todo-list.component';
 
 interface IProps {
-    todos: Todo[] | null
+    todos: Todo[] | null;
 }
 
-const UserDetail: FunctionComponent<IProps> = () => {
+const UserDetail: FunctionComponent<IProps> = ({ todos }) => {
     const [activeTab, setActiveTab] = useState('1');
 
     const toggle = (tab: string) => {
@@ -54,7 +55,13 @@ const UserDetail: FunctionComponent<IProps> = () => {
                 </NavItem>
             </Nav>
             <TabContent activeTab={activeTab}>
-                <TabPane tabId="1">iuweuir</TabPane>
+                <TabPane tabId="1">
+                    {todos && todos.length ? (
+                        <TodoList todos={todos}></TodoList>
+                    ) : (
+                        'No Todos found'
+                    )}
+                </TabPane>
                 <TabPane tabId="2">e3243242</TabPane>
             </TabContent>
         </>
@@ -67,7 +74,7 @@ const UserDetail: FunctionComponent<IProps> = () => {
 
 const mapStateToProps = (state: IAppState) => {
     const todos = getTodos(state.todos, state.ui.selectedUser);
-    console.log(todos);
+    console.log('Todos', todos);
     return {
         todos: todos
     };
