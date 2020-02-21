@@ -7,8 +7,8 @@ import { connect } from 'react-redux';
 
 interface IProps {
     todo: Todo;
-    toggleCompleted: (todoId: number, completed: boolean) => void;
-    removeTodo: (todoId: number) => void;
+    toggleCompleted: (todoId: number, userId: number, completed: boolean) => void;
+    removeTodo: (todoId: number, userId: number) => void;
 }
 
 const TodoListItem: FunctionComponent<IProps> = ({ todo, toggleCompleted, removeTodo }) => {
@@ -20,14 +20,14 @@ const TodoListItem: FunctionComponent<IProps> = ({ todo, toggleCompleted, remove
                         type="checkbox"
                         checked={todo.completed}
                         onChange={e => {
-                            toggleCompleted(todo.id, e.target.checked);
+                            toggleCompleted(todo.id, todo.userId, e.target.checked);
                         }}
                     />
                 </Label>
             </FormGroup>
             {todo.title}
             <Button close onClick={e => {
-                removeTodo(todo.id)
+                removeTodo(todo.id, todo.userId)
             }}></Button>
         </ListGroupItem>
     );
@@ -35,11 +35,11 @@ const TodoListItem: FunctionComponent<IProps> = ({ todo, toggleCompleted, remove
 
 const mapDispatchToProps = (dispatch: AppThunkDispatch) => {
     return {
-        toggleCompleted: (todoId: number, completed: boolean) => {
-            dispatch(toggleCompleted(todoId, completed));
+        toggleCompleted: (todoId: number, userId: number, completed: boolean) => {
+            dispatch(toggleCompleted(todoId, userId, completed));
         },
-        removeTodo: (todoId: number) => {
-            dispatch(removeTodo(todoId));
+        removeTodo: (todoId: number, userId: number) => {
+            dispatch(removeTodo(todoId, userId));
         }
     };
 };

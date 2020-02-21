@@ -1,7 +1,15 @@
+export enum TodoAction {
+    COMPLETED,
+    UNCOMPLETED,
+    UPDATED,
+    CREATED,
+    DELETED
+}
+
 export default class TodoHistory {
     todoId: number;
     userId: number;
-    action: string;
+    action: TodoAction;
     performedAt: Date;
 
     constructor(data: any) {

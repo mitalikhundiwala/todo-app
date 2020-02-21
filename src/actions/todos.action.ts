@@ -6,15 +6,23 @@ export enum TodosAction {
     REMOVE_TODO = 'REMOVE_TODO'
 }
 
-export const toggleCompleted = (todoId: number, completed: boolean) => ({
+export const toggleCompleted = (
+    todoId: number,
+    userId: number,
+    completed: boolean
+) => ({
     type: TodosAction.TOGGLE_COMPLETE,
     payload: {
         todoId,
+        userId,
         completed
     }
 });
 
-export const removeTodo = (todoId: number) => ({
+export const removeTodo = (todoId: number, userId: number) => ({
     type: TodosAction.REMOVE_TODO,
-    payload: todoId
+    payload: {
+        todoId,
+        userId
+    }
 });

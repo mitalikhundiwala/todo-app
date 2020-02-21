@@ -22,8 +22,11 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             };
         }
         case TodosAction.TOGGLE_COMPLETE: {
-            const payload: { todoId: number; completed: boolean } =
-                action.payload;
+            const payload: {
+                todoId: number;
+                userId: number;
+                completed: boolean;
+            } = action.payload;
             return {
                 ...state,
                 [payload.todoId]: {
@@ -33,11 +36,11 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             };
         }
         case TodosAction.REMOVE_TODO: {
-            const todoId: number = action.payload;
+            const payload: { todoId: number; userId: number } = action.payload;
             const todos = {
                 ...state
             };
-            delete todos[todoId];
+            delete todos[payload.todoId];
             return todos;
         }
         default:
