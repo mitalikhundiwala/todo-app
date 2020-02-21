@@ -1,7 +1,9 @@
 import { AnyAction } from 'redux';
 import { UsersAction } from '../actions/users.action';
 
-export type IState = { [key: string]: string | null };
+export interface IState {
+    selectedUser: number | null;
+}
 
 const defaultState: IState = {
     selectedUser: null

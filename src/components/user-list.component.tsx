@@ -1,9 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { IAppState, AppThunkDispatch } from '../store';
 import { connect } from 'react-redux';
 import User from '../models/user.model';
 import { FormGroup, Label, Input } from 'reactstrap';
 import { selectUser } from '../actions/users.action';
+import { getUsers } from '../selectors/users.selector';
 
 interface IProps {
     users: User[];
@@ -11,6 +12,12 @@ interface IProps {
 }
 
 const UserList: FunctionComponent<IProps> = ({ users, selectUser }) => {
+    useEffect(() => {
+        if (users.length > 0) {
+            selectUser(users[0].id);
+        }
+    }, []);
+
     return (
         <FormGroup>
             <Label for="usersSelect">Select User</Label>
@@ -35,9 +42,7 @@ const UserList: FunctionComponent<IProps> = ({ users, selectUser }) => {
 };
 
 const mapStateToProps = (state: IAppState) => {
-    const users = Object.keys(state.users).map(userId => {
-        return state.users[userId];
-    });
+    const users = getUsers(state.users);
 
     return {
         users: users
