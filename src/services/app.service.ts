@@ -1,40 +1,19 @@
 import data from '../data/db.json';
 import { delay } from '../utils/promise.utils';
+import User from '../models/user.model';
+import Todo from '../models/todo.model';
 
-export const loadState = () => {
-    try {
-        const serializedState = localStorage.getItem('wakecap');
-        if (serializedState === null) {
-            return undefined;
-        }
-        return JSON.parse(serializedState);
-    } catch (err) {
-        return undefined;
-    }
-};
+export interface IInitialData {
+    users?: User[];
+    todos?: Todo[];
+}
 
-export const saveState = state => {
-    try {
-        const serializedState = JSON.stringify(state);
-        localStorage.setItem('wakecap', serializedState);
-    } catch (err) {
-        // Ignore Errors
-    }
-};
-
-export const retrieveInitialData = async () => {
-    try {
-        await delay(1000);
-        let serializedState = localStorage.getItem('wakecap');
-        let unserializedState;
-        if (!serializedState) {
-            unserializedState = data;
-            localStorage.setItem('wakecap', JSON.stringify(unserializedState));
-        } else {
-            unserializedState = JSON.parse(serializedState);
-        }
-        return unserializedState;
-    } catch (err) {
-        // Ignore Errors
-    }
+export const retrieveInitialData = async (): Promise<IInitialData> => {
+    await delay(1000);
+    const users = data?.users?.map((user: any) => {
+        return new User(user);
+    });
+    return {
+        users
+    };
 };
