@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, createContext } from 'react';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { AppThunkDispatch, IAppState } from './store';
@@ -13,11 +13,21 @@ interface IProps {
     selectedUser: number | null;
 }
 
+export const { Provider, Consumer } = React.createContext({
+    isTodosFetching: false,
+    toggleIsTodosFetching: (isTodosFetching: boolean) => {}
+});
+
 const App: FunctionComponent<IProps> = ({
     loadInitialData,
     selectedUser
 }: IProps) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isTodosFetching, setIsTodosFetching] = useState(false);
+
+    const toggleIsTodosFetching = (isTodosFetching: boolean) => {
+        setIsTodosFetching(isTodosFetching);
+    };
 
     useEffect(() => {
         setIsLoading(true);
@@ -33,12 +43,22 @@ const App: FunctionComponent<IProps> = ({
             </Navbar>
             <div className="container my-4">
                 {isLoading ? (
-                    <Spinner color="primary"></Spinner>
+                    <div className="text-center">
+                        <Spinner size="sm" color="primary"></Spinner> Loading Users...
+                    </div>
                 ) : (
-                    <>
-                        <UserList />
-                        {selectedUser ? <UserDetail></UserDetail> : <Alert color="warning">No User selected</Alert>}
-                    </>
+                    <Provider
+                        value={{ isTodosFetching, toggleIsTodosFetching }}
+                    >
+                        <>
+                            <UserList />
+                            {selectedUser ? (
+                                <UserDetail></UserDetail>
+                            ) : (
+                                <Alert color="warning">No User selected</Alert>
+                            )}
+                        </>
+                    </Provider>
                 )}
             </div>
         </>

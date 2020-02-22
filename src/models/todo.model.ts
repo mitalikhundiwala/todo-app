@@ -5,7 +5,7 @@ export default class Todo {
     completed: boolean;
 
     constructor(data: any) {
-        this.todoId = data.id;
+        this.todoId = data.todoId;
         this.userId = data.userId;
         this.title = data.title;
         this.completed = data.completed;
