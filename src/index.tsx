@@ -4,12 +4,12 @@ import { Provider, connect } from 'react-redux';
 import configureStore from './store';
 import App from './app';
 import './styles/global.styles.scss';
+import LocalStorageService from './services/local-storage.service';
 
 const store = configureStore();
-// store.subscribe(() => {
-//   debugger;
-//   saveState(store.getState());
-// });
+store.subscribe(() => {
+    LocalStorageService.saveState(store.getState());
+});
 
 ReactDOM.render(
     <Provider store={store}>

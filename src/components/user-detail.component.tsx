@@ -11,7 +11,10 @@ import {
     CardText,
     Row,
     Col,
-    Alert
+    Alert,
+    InputGroupText,
+    Spinner,
+    Progress
 } from 'reactstrap';
 import classnames from 'classnames';
 import { IAppState, AppThunkDispatch } from '../store';
@@ -25,6 +28,8 @@ import AddTodo from './add-todo.component';
 import TodoHistory from '../models/history';
 import User from '../models/user.model';
 import { ToggleAddTodo } from '../actions/ui.action';
+
+import { Consumer } from '../app';
 
 interface IProps {
     todos: Todo[] | null;
@@ -51,71 +56,84 @@ const UserDetail: FunctionComponent<IProps> = ({
     };
 
     return (
-        <>
-            <Nav tabs className="mb-4">
-                <NavItem>
-                    <NavLink
-                        className={classnames({
-                            active: activeTab === '1'
-                        })}
-                        onClick={() => {
-                            toggle('1');
-                        }}
-                        href="#"
-                    >
-                        TODOs
-                    </NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink
-                        className={classnames({
-                            active: activeTab === '2'
-                        })}
-                        onClick={() => {
-                            toggle('2');
-                        }}
-                        href="#"
-                    >
-                        History
-                    </NavLink>
-                </NavItem>
-                <NavItem className="ml-auto">
-                    <Button
-                        color="primary"
-                        onClick={() => {
-                            toggleAddTodo(!isAddingTodo);
-                        }}
-                    >
-                        Add TODO
-                    </Button>
-                </NavItem>
-            </Nav>
+        <Consumer>
+            {context => (
+                <>
+                    <Nav tabs className="mb-4">
+                        <NavItem>
+                            <NavLink
+                                className={classnames({
+                                    active: activeTab === '1'
+                                })}
+                                onClick={() => {
+                                    toggle('1');
+                                }}
+                                href="#"
+                            >
+                                TODOs{' '}
+                                {context.isTodosFetching ? (
+                                    <Spinner
+                                        size="sm"
+                                        color="primary"
+                                    ></Spinner>
+                                ) : null}
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={classnames({
+                                    active: activeTab === '2'
+                                })}
+                                onClick={() => {
+                                    toggle('2');
+                                }}
+                                href="#"
+                            >
+                                History
+                            </NavLink>
+                        </NavItem>
+                        <NavItem className="ml-auto">
+                            <Button
+                                color="primary"
+                                onClick={() => {
+                                    toggleAddTodo(!isAddingTodo);
+                                }}
+                            >
+                                Add TODO
+                            </Button>
+                        </NavItem>
+                    </Nav>
 
-            <TabContent activeTab={activeTab}>
-                <TabPane tabId="1">
-                    {isAddingTodo ? (
-                        <div className="mb-4">
-                            <AddTodo></AddTodo>
-                        </div>
-                    ) : (
-                        ''
-                    )}
+                    <TabContent activeTab={activeTab}>
+                        <TabPane tabId="1">
+                            {isAddingTodo ? (
+                                <div className="mb-4">
+                                    <AddTodo></AddTodo>
+                                </div>
+                            ) : (
+                                ''
+                            )}
+                            {(!context.isTodosFetching && (!todos || !todos.length)) ? (
+                                <Alert color="warning">No Todos found</Alert>
+                            ) : null}
 
-                    {todos && todos.length ? (
-                        <TodoList todos={todos}></TodoList>
-                    ) : (
-                        <Alert color="warning">No Todos found</Alert>
-                    )}
-                </TabPane>
-                <TabPane tabId="2">
-                    {historyWithUser && historyWithUser.length ? (
-                        <HistoryList history={historyWithUser}></HistoryList>
-                    ) : (
-                        <Alert color="warning">No History found</Alert>
-                    )}
-                </TabPane>
-            </TabContent>
-        </>
+                            {todos && todos.length ? (
+                                <TodoList todos={todos}></TodoList>
+                            ) : null}
+                        </TabPane>
+                        <TabPane tabId="2">
+                            {historyWithUser && historyWithUser.length ? (
+                                <HistoryList
+                                    history={historyWithUser}
+                                ></HistoryList>
+                            ) : (
+                                <Alert color="warning">No History found</Alert>
+                            )}
+                        </TabPane>
+                    </TabContent>
+                </>
+            )}
+        </Consumer>
     );
 };
 

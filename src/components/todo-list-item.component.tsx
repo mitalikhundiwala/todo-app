@@ -95,6 +95,7 @@ const TodoListItem: FunctionComponent<IProps> = ({
                                                 color="success"
                                                 type="submit"
                                                 outline
+                                                disabled={!inputValue}
                                             >
                                                 Update
                                             </Button>

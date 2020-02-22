@@ -1,25 +1,38 @@
 import { delay } from '../utils/promise.utils';
 import Todo from '../models/todo.model';
 import data from '../data/db.json';
+import LocalStorageService from './local-storage.service';
 
 class TodoService {
     static async retriveTodosForUser(userId: number): Promise<Todo[]> {
         await delay(1000);
+        const dataFromLocalStorage = LocalStorageService.fetchTodosByUser(
+            userId
+        );
         return data.todos
             .filter(todo => {
                 return todo.userId === userId;
             })
             .map(todo => {
-                return new Todo(todo);
+                return new Todo({
+                    ...todo,
+                    todoId: todo.id
+                });
+            })
+            .map(todo => {
+                return {
+                    ...todo,
+                    ...dataFromLocalStorage[todo.todoId]
+                };
             });
     }
 
     static async addTodo(title: string, userId: number): Promise<Todo> {
         await delay(1000);
-        const id = new Date().getTime();
+        const todoId = new Date().getTime();
 
         return new Todo({
-            id,
+            todoId,
             title,
             userId,
             completed: false

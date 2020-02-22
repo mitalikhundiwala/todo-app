@@ -37,7 +37,6 @@ const AddTodo: FunctionComponent<IProps> = ({
                 const title = inputValue;
                 setAddTodoInProgress(true);
                 await addTodo(title, userId);
-                setAddTodoInProgress(false);
             }}
         >
             <InputGroup>
@@ -56,7 +55,7 @@ const AddTodo: FunctionComponent<IProps> = ({
                         </InputGroupText>
                     ) : (
                         <>
-                            <Button color="success" type="submit" outline>
+                            <Button color="success" type="submit" outline disabled={!inputValue}>
                                 Add
                             </Button>
                             <Button
