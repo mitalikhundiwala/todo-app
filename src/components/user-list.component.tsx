@@ -12,15 +12,10 @@ interface IProps {
 }
 
 const UserList: FunctionComponent<IProps> = ({ users, selectUser }) => {
-    useEffect(() => {
-        if (users.length > 0) {
-            selectUser(users[0].id);
-        }
-    }, []);
 
     return (
         <FormGroup>
-            <Label for="usersSelect">Select User</Label>
+            <Label for="usersSelect">Please select User</Label>
             <Input
                 type="select"
                 name="select"
@@ -29,6 +24,7 @@ const UserList: FunctionComponent<IProps> = ({ users, selectUser }) => {
                     selectUser(parseInt(e.target.value));
                 }}
             >
+                <option value="">Select User</option>
                 {users.map((user: User) => {
                     return (
                         <option key={user.id} value={user.id}>
@@ -51,7 +47,7 @@ const mapStateToProps = (state: IAppState) => {
 
 const mapDispatchToProps = (dispatch: AppThunkDispatch) => ({
     selectUser: (userId: number) => {
-        dispatch(selectUser(userId));
+        return dispatch(selectUser(userId));
     }
 });
 

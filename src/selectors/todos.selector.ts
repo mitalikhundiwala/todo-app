@@ -11,7 +11,11 @@ export const getTodos = (
     const todoIds = Object.keys(todos).filter((todoId: string) => {
         return todos[todoId].userId === userId;
     });
-    return todoIds.map(todoId => {
-        return todos[todoId];
-    });
+    return todoIds
+        .map(todoId => {
+            return todos[todoId];
+        })
+        .sort((a, b) => {
+            return a.todoId < b.todoId ? 1 : -1;
+        });
 };

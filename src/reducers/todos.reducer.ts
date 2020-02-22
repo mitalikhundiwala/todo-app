@@ -10,11 +10,14 @@ const defaultState: IState = {};
 
 export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
-        case SET_INITIAL_DATA: {
-            const payload: IInitialData = action.payload;
+        case TodosAction.SET_TODOS: {
+            const payload: {
+                userId: number;
+                todos: Todo[];
+            } = action.payload;
             const todos: { [key: string]: Todo } = {};
             payload.todos?.forEach((todo: Todo) => {
-                todos[`${todo.id}`] = todo;
+                todos[`${todo.todoId}`] = todo;
             });
             return {
                 ...state,
@@ -42,6 +45,26 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             };
             delete todos[payload.todoId];
             return todos;
+        }
+        case TodosAction.UPDATE_TODO: {
+            const payload: { todoId: number; title: string; userId: number } =
+                action.payload;
+            return {
+                ...state,
+                [payload.todoId]: {
+                    ...state[payload.todoId],
+                    title: payload.title
+                }
+            };
+        }
+        case TodosAction.ADD_TODO: {
+            const payload: Todo = action.payload;
+            return {
+                [payload.todoId]: {
+                    ...payload
+                },
+                ...state
+            };
         }
         default:
             return state;

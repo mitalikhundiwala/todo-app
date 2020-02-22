@@ -41,11 +41,11 @@ export const retrieveInitialData = async (): Promise<IInitialData> => {
     const users = appState?.users?.map((user: any) => {
         return new User(user);
     });
-    const todos = appState?.todos?.map((todo: any) => {
-        return new Todo(todo);
-    });
+    // const todos = appState?.todos?.map((todo: any) => {
+    //     return new Todo(todo);
+    // });
     return {
         users,
-        todos
+        // todos
     };
 };
