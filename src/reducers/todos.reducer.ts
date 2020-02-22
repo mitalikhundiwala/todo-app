@@ -43,6 +43,17 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             delete todos[payload.todoId];
             return todos;
         }
+        case TodosAction.UPDATE_TODO: {
+            const payload: { todoId: number; title: string; userId: number } =
+                action.payload;
+            return {
+                ...state,
+                [payload.todoId]: {
+                    ...state[payload.todoId],
+                    title: payload.title
+                }
+            };
+        }
         default:
             return state;
     }
