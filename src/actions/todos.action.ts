@@ -3,11 +3,13 @@ import Todo from '../models/todo.model';
 import { delay } from '../utils/promise.utils';
 import { ThunkAction } from 'redux-thunk';
 import { IAppState } from '../store';
+import TodoService from '../services/todos.service';
 
 export enum TodosAction {
     TOGGLE_COMPLETE = 'TOGGLE_COMPLETE',
     REMOVE_TODO = 'REMOVE_TODO',
-    UPDATE_TODO = 'UPDATE_TODO'
+    UPDATE_TODO = 'UPDATE_TODO',
+    ADD_TODO = 'ADD_TODO'
 }
 
 export const toggleCompleted = (
@@ -57,5 +59,23 @@ export const updateTodo = (
             title,
             userId
         };
+    };
+};
+
+export const addTodoSuccess = (todo: Todo) => ({
+    type: TodosAction.ADD_TODO,
+    payload: {
+        ...todo
+    }
+});
+
+export const addTodo = (
+    title: string,
+    userId: number
+): ThunkAction<Promise<any>, IAppState, undefined, AnyAction> => {
+    return async (dispatch: Dispatch) => {
+        const todo = await TodoService.addTodo(title, userId);
+        dispatch(addTodoSuccess(todo));
+        return todo;
     };
 };

@@ -4,5 +4,7 @@ export enum UsersAction {
 
 export const selectUser = (userId: number) => ({
     type: UsersAction.SELECT_USER,
-    payload: userId
+    payload: {
+        userId
+    }
 });

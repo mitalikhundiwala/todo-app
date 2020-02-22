@@ -54,6 +54,21 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
                 }
             };
         }
+        case TodosAction.ADD_TODO: {
+            console.log(action);
+            const payload: {
+                id: number;
+                title: string;
+                userId: number;
+                completed: boolean;
+            } = action.payload;
+            return {
+                [payload.id]: {
+                    ...payload
+                },
+                ...state
+            };
+        }
         default:
             return state;
     }

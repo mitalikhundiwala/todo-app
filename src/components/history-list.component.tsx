@@ -13,15 +13,47 @@ interface IProps {
 
 const getActionDescription = (todoHistory: TodoHistory, user: User) => {
     if (todoHistory.action === TodoAction.COMPLETED) {
-        return `${user.name} Changed TODO#${todoHistory.todoId} to done`;
+        return (
+            <>
+                <span className="text-primary">{user.name}</span>{' '}
+                <span>changed</span> ToDo#{' '}
+                <span className="text-primary">{todoHistory.todoId}</span> to{' '}
+                <span>Done</span>
+            </>
+        );
     } else if (todoHistory.action === TodoAction.UNCOMPLETED) {
-        return `${user.name} Changed TODO#${todoHistory.todoId} to undone`;
+        return (
+            <>
+                <span className="text-primary">{user.name}</span>{' '}
+                <span>changed</span> ToDo#{' '}
+                <span className="text-primary">{todoHistory.todoId}</span> to{' '}
+                <span>Undone</span>
+            </>
+        );
     } else if (todoHistory.action === TodoAction.CREATED) {
-        return `${user.name} Added TODO#${todoHistory.todoId}`;
+        return (
+            <>
+                <span className="text-primary">{user.name}</span>{' '}
+                <span>added</span> ToDo#{' '}
+                <span className="text-primary">{todoHistory.todoId}</span>
+            </>
+        );
     } else if (todoHistory.action === TodoAction.DELETED) {
-        return `${user.name} Removed TODO#${todoHistory.todoId}`;
+        return (
+            <>
+                <span className="text-primary">{user.name}</span>{' '}
+                <span>removed</span> ToDo#{' '}
+                <span className="text-primary">{todoHistory.todoId}</span>
+            </>
+        );
     } else if (todoHistory.action === TodoAction.UPDATED) {
-        return `${user.name} Updated TODO#${todoHistory.todoId}`;
+        return (
+            <>
+                <span className="text-primary">{user.name}</span>{' '}
+                <span>updated</span> ToDo#{' '}
+                <span className="text-primary">{todoHistory.todoId}</span>
+            </>
+        );
     }
 };
 
@@ -41,10 +73,15 @@ const HistoryList: FunctionComponent<IProps> = ({ history }) => {
                                 )}
                             </div>
                             <div className="col-auto text-right">
-                                {formatDistanceToNow(
-                                    datum.todoHistory.performedAt,
-                                    { includeSeconds: true, addSuffix: true }
-                                )}
+                                <em className="text-secondary">
+                                    {formatDistanceToNow(
+                                        datum.todoHistory.performedAt,
+                                        {
+                                            includeSeconds: true,
+                                            addSuffix: true
+                                        }
+                                    )}
+                                </em>
                             </div>
                         </div>
                     </ListGroupItem>

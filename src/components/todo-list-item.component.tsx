@@ -1,6 +1,13 @@
 import React, { FunctionComponent, useState, RefObject } from 'react';
 import Todo from '../models/todo.model';
-import { ListGroupItem, FormGroup, Input, Button } from 'reactstrap';
+import {
+    ListGroupItem,
+    FormGroup,
+    Input,
+    Button,
+    InputGroup,
+    InputGroupAddon
+} from 'reactstrap';
 import { AppThunkDispatch } from '../store';
 import {
     toggleCompleted,
@@ -58,45 +65,52 @@ const TodoListItem: FunctionComponent<IProps> = ({
                     </div>
                     <div className="col">
                         {isEditing ? (
-                            <Input
-                                type="text"
-                                name="todoTitle"
-                                value={inputValue}
-                                innerRef={inputRef}
-                                onChange={e => {
-                                    setInputValue(e.target.value);
-                                }}
-                            />
+                            <InputGroup>
+                                <Input
+                                    type="text"
+                                    name="todoTitle"
+                                    value={inputValue}
+                                    innerRef={inputRef}
+                                    onChange={e => {
+                                        setInputValue(e.target.value);
+                                    }}
+                                />
+                                <InputGroupAddon addonType="append">
+                                    <Button
+                                        color="success"
+                                        type="submit"
+                                        outline
+                                    >
+                                        Update
+                                    </Button>
+
+                                    <Button
+                                        outline
+                                        color="secondary"
+                                        onClick={e => {
+                                            setInputValue(todo.title);
+                                            setIsEditing(false);
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
+                                </InputGroupAddon>
+                            </InputGroup>
                         ) : (
                             <div
+                                className="text-break"
                                 onClick={() => {
                                     setIsEditing(!isEditing);
                                 }}
                             >
-                                {todo.title}
+                                {todo.completed ? (
+                                    <del className="text-secondary">{todo.title}</del>
+                                ) : (
+                                    <span>{todo.title}</span>
+                                )}
                             </div>
                         )}
                     </div>
-                    {isEditing && (
-                        <div className="row">
-                            <div className="col">
-                                <Button color="primary" type="submit">
-                                    Update
-                                </Button>
-                            </div>
-                            <div className="col-auto">
-                                <Button
-                                    color="secondary"
-                                    onClick={e => {
-                                        setInputValue(todo.title);
-                                        setIsEditing(false);
-                                    }}
-                                >
-                                    Cancel
-                                </Button>
-                            </div>
-                        </div>
-                    )}
                     <div className="col-auto">
                         <Button
                             close

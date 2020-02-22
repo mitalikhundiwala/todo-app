@@ -33,7 +33,7 @@ const App: FunctionComponent<IProps> = (props: IProps) => {
             <Navbar color="dark" dark>
                 <NavbarBrand href="/">WakeCap</NavbarBrand>
             </Navbar>
-            <div className="container my-3">
+            <div className="container my-4">
                 {isLoading ? (
                     <Spinner color="primary"></Spinner>
                 ) : (
