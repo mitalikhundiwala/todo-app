@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { AppThunkDispatch } from './store';
-import { Spinner, Navbar, NavbarBrand } from 'reactstrap';
+import { AppThunkDispatch, IAppState } from './store';
+import { Spinner, Navbar, NavbarBrand, Alert } from 'reactstrap';
 
 import { loadInitialData } from './actions/app.action';
 import UserList from './components/user-list.component';
@@ -10,20 +10,18 @@ import UserDetail from './components/user-detail.component';
 
 interface IProps {
     loadInitialData: () => Promise<any>;
+    selectedUser: number | null;
 }
 
-const mapDispatchToProps = (dispatch: AppThunkDispatch) => ({
-    loadInitialData: () => {
-        return dispatch(loadInitialData());
-    }
-});
-
-const App: FunctionComponent<IProps> = (props: IProps) => {
+const App: FunctionComponent<IProps> = ({
+    loadInitialData,
+    selectedUser
+}: IProps) => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setIsLoading(true);
-        props.loadInitialData().then(() => {
+        loadInitialData().then(() => {
             setIsLoading(false);
         });
     }, []);
@@ -39,7 +37,7 @@ const App: FunctionComponent<IProps> = (props: IProps) => {
                 ) : (
                     <>
                         <UserList />
-                        <UserDetail></UserDetail>
+                        {selectedUser ? <UserDetail></UserDetail> : <Alert color="warning">No User selected</Alert>}
                     </>
                 )}
             </div>
@@ -47,4 +45,16 @@ const App: FunctionComponent<IProps> = (props: IProps) => {
     );
 };
 
-export default connect(undefined, mapDispatchToProps)(App);
+const mapStateToProps = (state: IAppState) => {
+    return {
+        selectedUser: state.ui.selectedUser
+    };
+};
+
+const mapDispatchToProps = (dispatch: AppThunkDispatch) => ({
+    loadInitialData: () => {
+        return dispatch(loadInitialData());
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
