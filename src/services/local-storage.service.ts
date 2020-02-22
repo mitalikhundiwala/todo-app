@@ -1,13 +1,40 @@
-import { IAppState } from '../store/index.js';
+import { IAppState } from '../store/index';
 import Todo from '../models/todo.model';
+import TodoHistory from '../models/history';
 
 export default class LocalStorageService {
     static saveState(state: IAppState) {
         try {
-            const serializedState = JSON.stringify(state);
+            const serializedState = JSON.stringify({
+                users: state.users,
+                todos: state.todos,
+                history: state.history
+            });
             localStorage.setItem('wakecap', serializedState);
         } catch (err) {
             // Ignore Errors
+        }
+    }
+
+    static loadState(): any {
+        try {
+            const serializedState = localStorage.getItem('wakecap');
+            if (serializedState === null) {
+                return {};
+            }
+            const parsedState = JSON.parse(serializedState);
+            const parsedHistory = parsedState.history.map((history: any) => {
+                return new TodoHistory({
+                    ...history,
+                    performedAt: new Date(history.performedAt)
+                });
+            });
+            return {
+                ...parsedState,
+                history: parsedHistory
+            };
+        } catch (err) {
+            return {};
         }
     }
 

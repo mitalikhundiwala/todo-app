@@ -14,6 +14,7 @@ import historyReducer, {
     IState as IHistoryState
 } from '../reducers/history.reducer';
 import uiReducer, { IState as IUIState } from '../reducers/ui.reducer';
+import LocalStorageService from '../services/local-storage.service';
 
 const composeEnhancers =
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -37,7 +38,8 @@ const combinedReducers: Reducer<IAppState> = combineReducers({
 export default () => {
     const store = createStore(
         combinedReducers,
-        composeEnhancers(applyMiddleware(thunk))
+        LocalStorageService.loadState(),
+        composeEnhancers(applyMiddleware(thunk)),
     );
 
     return store;
