@@ -47,7 +47,7 @@ const mapStateToProps = (state: IAppState) => {
 
 const mapDispatchToProps = (dispatch: AppThunkDispatch) => ({
     selectUser: (userId: number) => {
-        dispatch(selectUser(userId));
+        return dispatch(selectUser(userId));
     }
 });
 

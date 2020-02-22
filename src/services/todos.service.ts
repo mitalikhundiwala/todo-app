@@ -1,7 +1,19 @@
 import { delay } from '../utils/promise.utils';
 import Todo from '../models/todo.model';
+import data from '../data/db.json';
 
 class TodoService {
+    static async retriveTodosForUser(userId: number): Promise<Todo[]> {
+        await delay(1000);
+        return data.todos
+            .filter(todo => {
+                return todo.userId === userId;
+            })
+            .map(todo => {
+                return new Todo(todo);
+            });
+    }
+
     static async addTodo(title: string, userId: number): Promise<Todo> {
         await delay(1000);
         const id = new Date().getTime();

@@ -10,8 +10,11 @@ const defaultState: IState = {};
 
 export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
-        case SET_INITIAL_DATA: {
-            const payload: IInitialData = action.payload;
+        case TodosAction.SET_TODOS: {
+            const payload: {
+                userId: number;
+                todos: Todo[];
+            } = action.payload;
             const todos: { [key: string]: Todo } = {};
             payload.todos?.forEach((todo: Todo) => {
                 todos[`${todo.todoId}`] = todo;

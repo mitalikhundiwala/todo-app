@@ -6,6 +6,7 @@ import { IAppState } from '../store';
 import TodoService from '../services/todos.service';
 
 export enum TodosAction {
+    SET_TODOS = 'SET_TODOS',
     TOGGLE_COMPLETE = 'TOGGLE_COMPLETE',
     REMOVE_TODO = 'REMOVE_TODO',
     UPDATE_TODO = 'UPDATE_TODO',
@@ -22,6 +23,14 @@ export const toggleCompleted = (
         todoId,
         userId,
         completed
+    }
+});
+
+export const setTodosForUser = (userId: number, todos: Todo[]) => ({
+    type: TodosAction.SET_TODOS,
+    payload: {
+        userId,
+        todos
     }
 });
 

@@ -15,7 +15,7 @@ const defaultState: IState = {
 
 export default (state: IState = defaultState, action: AnyAction): IState => {
     switch (action.type) {
-        case UsersAction.SELECT_USER:
+        case UsersAction.SET_SELECTED_USER:
             return {
                 ...state,
                 selectedUser: action.payload.userId
