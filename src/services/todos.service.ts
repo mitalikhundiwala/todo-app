@@ -13,6 +13,39 @@ class TodoService {
             completed: false
         });
     }
+
+    static async updateTodo(
+        todoId: number,
+        title: string,
+        userId: number
+    ): Promise<{
+        todoId: number;
+        title: string;
+        userId: number;
+    }> {
+        await delay(1000);
+
+        return {
+            todoId,
+            title,
+            userId
+        };
+    }
+
+    static async removeTodo(
+        todoId: number,
+        userId: number
+    ): Promise<{
+        todoId: number;
+        userId: number;
+    }> {
+        await delay(1000);
+
+        return {
+            todoId,
+            userId
+        };
+    }
 }
 
 export default TodoService;

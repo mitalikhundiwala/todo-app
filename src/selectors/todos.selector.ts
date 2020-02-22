@@ -16,6 +16,6 @@ export const getTodos = (
             return todos[todoId];
         })
         .sort((a, b) => {
-            return a.id < b.id ? 1 : -1;
+            return a.todoId < b.todoId ? 1 : -1;
         });
 };

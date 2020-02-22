@@ -8,13 +8,12 @@ const defaultState: IState = [];
 
 const getHistoryAction = (action: AnyAction) => {
     const payload: {
-        id?: number;
-        todoId?: number;
+        todoId: number;
         userId: number;
         completed?: boolean;
     } = action.payload;
     return {
-        todoId: payload.id ?? payload.todoId,
+        todoId: payload.todoId,
         userId: payload.userId,
         performedAt: new Date()
     };

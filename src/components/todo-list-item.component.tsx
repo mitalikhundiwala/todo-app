@@ -6,7 +6,9 @@ import {
     Input,
     Button,
     InputGroup,
-    InputGroupAddon
+    InputGroupAddon,
+    InputGroupText,
+    Spinner
 } from 'reactstrap';
 import { AppThunkDispatch } from '../store';
 import {
@@ -36,14 +38,18 @@ const TodoListItem: FunctionComponent<IProps> = ({
     const [isEditing, setIsEditing] = useState(false);
     const [inputValue, setInputValue] = useState(todo.title);
     const inputRef: RefObject<HTMLInputElement> = React.createRef();
+    const [updateTodoInProgress, setUpdateTodoInProgress] = useState(false);
+    const [removeTodoInProgress, setRemoveTodoInProgress] = useState(false);
 
     return (
         <ListGroupItem>
             <form
-                onSubmit={e => {
+                onSubmit={async e => {
                     e.preventDefault();
                     const title = inputValue;
-                    updateTodo(todo.id, title, todo.userId);
+                    setUpdateTodoInProgress(true);
+                    await updateTodo(todo.todoId, title, todo.userId);
+                    setUpdateTodoInProgress(false);
                     setIsEditing(false);
                 }}
             >
@@ -55,7 +61,7 @@ const TodoListItem: FunctionComponent<IProps> = ({
                                 checked={todo.completed}
                                 onChange={e => {
                                     toggleCompleted(
-                                        todo.id,
+                                        todo.todoId,
                                         todo.userId,
                                         e.target.checked
                                     );
@@ -76,35 +82,50 @@ const TodoListItem: FunctionComponent<IProps> = ({
                                     }}
                                 />
                                 <InputGroupAddon addonType="append">
-                                    <Button
-                                        color="success"
-                                        type="submit"
-                                        outline
-                                    >
-                                        Update
-                                    </Button>
+                                    {updateTodoInProgress ? (
+                                        <InputGroupText>
+                                            <Spinner
+                                                size="sm"
+                                                color="primary"
+                                            />
+                                        </InputGroupText>
+                                    ) : (
+                                        <>
+                                            <Button
+                                                color="success"
+                                                type="submit"
+                                                outline
+                                            >
+                                                Update
+                                            </Button>
 
-                                    <Button
-                                        outline
-                                        color="secondary"
-                                        onClick={e => {
-                                            setInputValue(todo.title);
-                                            setIsEditing(false);
-                                        }}
-                                    >
-                                        Cancel
-                                    </Button>
+                                            <Button
+                                                outline
+                                                color="secondary"
+                                                onClick={e => {
+                                                    setInputValue(todo.title);
+                                                    setIsEditing(false);
+                                                }}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    )}
                                 </InputGroupAddon>
                             </InputGroup>
                         ) : (
                             <div
                                 className="text-break"
                                 onClick={() => {
-                                    setIsEditing(!isEditing);
+                                    !todo.completed
+                                        ? setIsEditing(!isEditing)
+                                        : '';
                                 }}
                             >
                                 {todo.completed ? (
-                                    <del className="text-secondary">{todo.title}</del>
+                                    <del className="text-secondary">
+                                        {todo.title}
+                                    </del>
                                 ) : (
                                     <span>{todo.title}</span>
                                 )}
@@ -112,12 +133,25 @@ const TodoListItem: FunctionComponent<IProps> = ({
                         )}
                     </div>
                     <div className="col-auto">
-                        <Button
-                            close
-                            onClick={e => {
-                                removeTodo(todo.id, todo.userId);
-                            }}
-                        ></Button>
+                        {removeTodoInProgress ? (
+                            <InputGroupText>
+                                <Spinner size="sm" color="primary" />
+                            </InputGroupText>
+                        ) : (
+                            <>
+                                <Button
+                                    close
+                                    onClick={async e => {
+                                        setRemoveTodoInProgress(true);
+                                        await removeTodo(
+                                            todo.todoId,
+                                            todo.userId
+                                        );
+                                        setRemoveTodoInProgress(false);
+                                    }}
+                                ></Button>
+                            </>
+                        )}
                     </div>
                 </div>
             </form>
@@ -135,10 +169,10 @@ const mapDispatchToProps = (dispatch: AppThunkDispatch) => {
             dispatch(toggleCompleted(todoId, userId, completed));
         },
         removeTodo: (todoId: number, userId: number) => {
-            dispatch(removeTodo(todoId, userId));
+            return dispatch(removeTodo(todoId, userId));
         },
         updateTodo: (todoId: number, title: string, userId: number) => {
-            dispatch(updateTodo(todoId, title, userId));
+            return dispatch(updateTodo(todoId, title, userId));
         }
     };
 };

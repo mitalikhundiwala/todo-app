@@ -14,7 +14,7 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             const payload: IInitialData = action.payload;
             const todos: { [key: string]: Todo } = {};
             payload.todos?.forEach((todo: Todo) => {
-                todos[`${todo.id}`] = todo;
+                todos[`${todo.todoId}`] = todo;
             });
             return {
                 ...state,
@@ -55,15 +55,9 @@ export default (state: IState = defaultState, action: AnyAction): IState => {
             };
         }
         case TodosAction.ADD_TODO: {
-            console.log(action);
-            const payload: {
-                id: number;
-                title: string;
-                userId: number;
-                completed: boolean;
-            } = action.payload;
+            const payload: Todo = action.payload;
             return {
-                [payload.id]: {
+                [payload.todoId]: {
                     ...payload
                 },
                 ...state

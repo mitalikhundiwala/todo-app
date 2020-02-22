@@ -25,24 +25,35 @@ export const toggleCompleted = (
     }
 });
 
-export const removeTodo = (todoId: number, userId: number) => ({
+export const removeTodoSuccess = (todo: {
+    todoId: number;
+    userId: number;
+}) => ({
     type: TodosAction.REMOVE_TODO,
     payload: {
-        todoId,
-        userId
+        ...todo
     }
 });
 
-export const updateTodoSuccess = (
+export const removeTodo = (
     todoId: number,
-    title: string,
     userId: number
-) => ({
+): ThunkAction<Promise<any>, IAppState, undefined, AnyAction> => {
+    return async (dispatch: Dispatch) => {
+        const todo = await TodoService.removeTodo(todoId, userId);
+        dispatch(removeTodoSuccess(todo));
+        return todo;
+    };
+};
+
+export const updateTodoSuccess = (todo: {
+    todoId: number;
+    title: string;
+    userId: number;
+}) => ({
     type: TodosAction.UPDATE_TODO,
     payload: {
-        todoId,
-        title,
-        userId
+        ...todo
     }
 });
 
@@ -52,13 +63,9 @@ export const updateTodo = (
     userId: number
 ): ThunkAction<Promise<any>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
-        await delay(1000);
-        dispatch(updateTodoSuccess(todoId, title, userId));
-        return {
-            todoId,
-            title,
-            userId
-        };
+        const todo = await TodoService.updateTodo(todoId, title, userId);
+        dispatch(updateTodoSuccess(todo));
+        return todo;
     };
 };
 
@@ -72,7 +79,7 @@ export const addTodoSuccess = (todo: Todo) => ({
 export const addTodo = (
     title: string,
     userId: number
-): ThunkAction<Promise<any>, IAppState, undefined, AnyAction> => {
+): ThunkAction<Promise<Todo>, IAppState, undefined, AnyAction> => {
     return async (dispatch: Dispatch) => {
         const todo = await TodoService.addTodo(title, userId);
         dispatch(addTodoSuccess(todo));

@@ -11,7 +11,7 @@ const TodoList: FunctionComponent<IProps> = ({ todos }) => {
     return (
         <ListGroup>
             {todos.map((todo: Todo) => {
-                return <TodoListItem key={todo.id} todo={todo}></TodoListItem>;
+                return <TodoListItem key={todo.todoId} todo={todo}></TodoListItem>;
             })}
         </ListGroup>
     );
