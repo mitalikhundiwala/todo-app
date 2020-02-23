@@ -5,7 +5,7 @@ import { IAppState } from '../store';
 
 export const SET_INITIAL_DATA = 'SET_INITIAL_DATA';
 
-const setInitialData = (data: IInitialData): AnyAction => ({
+export const setInitialData = (data: IInitialData): AnyAction => ({
     type: SET_INITIAL_DATA,
     payload: data
 });
