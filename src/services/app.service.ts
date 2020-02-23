@@ -5,7 +5,6 @@ import Todo from '../models/todo.model';
 
 export interface IInitialData {
     users?: User[];
-    todos?: Todo[];
 }
 
 export const retrieveInitialData = async (): Promise<IInitialData> => {

@@ -6,7 +6,7 @@ export type IState = TodoHistory[];
 
 const defaultState: IState = [];
 
-const getHistoryAction = (action: AnyAction) => {
+export const getHistoryAction = (action: AnyAction) => {
     const payload: {
         todoId: number;
         userId: number;
