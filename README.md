@@ -1,10 +1,10 @@
-# Test solution for WakeCap assignment
+# Todo App
 
 The project is using parcel for bundling and transpilation with Typescript & React for rendering, Redux for state management.
 
 ## Hosted version
 
-The page is hosted on Netlify & can be accessed via [https://wakecap-test.netlify.com/](https://wakecap-test.netlify.com/)
+The page is hosted on Netlify & can be accessed via [https://todo-app-by-mitali.netlify.com/](https://todo-app-by-mitali.netlify.com/)
 
 ## Highlights
 

@@ -1,24 +1,17 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useContext } from 'react';
 import {
     TabContent,
     TabPane,
     Nav,
     NavItem,
     NavLink,
-    Card,
     Button,
-    CardTitle,
-    CardText,
-    Row,
-    Col,
     Alert,
-    InputGroupText,
-    Spinner,
-    Progress
+    Spinner
 } from 'reactstrap';
 import classnames from 'classnames';
 import { IAppState, AppThunkDispatch } from '../store';
-import { getTodos } from '../selectors/todos.selector';
+import { getTodosSelector } from '../selectors/todos.selector';
 import { getHistory } from '../selectors/history.selector';
 import Todo from '../models/todo.model';
 import { connect } from 'react-redux';
@@ -29,7 +22,8 @@ import TodoHistory from '../models/history';
 import User from '../models/user.model';
 import { ToggleAddTodo } from '../actions/ui.action';
 
-import { Consumer } from '../app';
+// import { Consumer } from '../app';
+import { Context } from '../app';
 
 interface IProps {
     todos: Todo[] | null;
@@ -55,9 +49,11 @@ const UserDetail: FunctionComponent<IProps> = ({
         if (activeTab !== tab) setActiveTab(tab);
     };
 
+    const context = useContext(Context);
+
     return (
-        <Consumer>
-            {context => (
+        // <Consumer>
+        //     {context => (
                 <>
                     <Nav tabs className="mb-4">
                         <NavItem>
@@ -132,13 +128,13 @@ const UserDetail: FunctionComponent<IProps> = ({
                         </TabPane>
                     </TabContent>
                 </>
-            )}
-        </Consumer>
+        //     )}
+        // </Consumer>
     );
 };
 
 const mapStateToProps = (state: IAppState) => {
-    const todos = getTodos(state.todos, state.ui.selectedUser);
+    const todos: Todo[] | null = getTodosSelector(state);
     const history = getHistory(
         state.history,
         state.ui.selectedUser,

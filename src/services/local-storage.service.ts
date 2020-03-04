@@ -10,7 +10,7 @@ export default class LocalStorageService {
                 todos: state.todos,
                 history: state.history
             });
-            localStorage.setItem('wakecap', serializedState);
+            localStorage.setItem('todo-app', serializedState);
         } catch (err) {
             // Ignore Errors
         }
@@ -18,7 +18,7 @@ export default class LocalStorageService {
 
     static loadState(): any {
         try {
-            const serializedState = localStorage.getItem('wakecap');
+            const serializedState = localStorage.getItem('todo-app');
             if (serializedState === null) {
                 return {};
             }

@@ -11,6 +11,7 @@ export const setInitialData = (data: IInitialData): AnyAction => ({
 });
 
 export const loadInitialData = (): ThunkAction<
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Promise<any>,
     IAppState,
     undefined,

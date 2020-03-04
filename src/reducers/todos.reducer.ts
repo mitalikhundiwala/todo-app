@@ -1,7 +1,5 @@
 import Todo from '../models/todo.model';
-import { SET_INITIAL_DATA } from '../actions/app.action';
 import { AnyAction } from 'redux';
-import { IInitialData } from '../services/app.service';
 import { TodosAction } from '../actions/todos.action';
 
 export type IState = { [key: string]: Todo };
