@@ -13,7 +13,11 @@ interface IProps {
     selectedUser: number | null;
 }
 
-export const { Provider, Consumer } = React.createContext({
+// export const { Provider, Consumer } = React.createContext({
+//     isTodosFetching: false,
+//     toggleIsTodosFetching: (isTodosFetching: boolean) => {}
+// });
+export const Context = React.createContext({
     isTodosFetching: false,
     toggleIsTodosFetching: (isTodosFetching: boolean) => {}
 });
@@ -39,7 +43,7 @@ const App: FunctionComponent<IProps> = ({
     return (
         <>
             <Navbar color="dark" dark>
-                <NavbarBrand href="/">WakeCap</NavbarBrand>
+                <NavbarBrand href="/">Home</NavbarBrand>
             </Navbar>
             <div className="container my-4">
                 {isLoading ? (
@@ -47,7 +51,7 @@ const App: FunctionComponent<IProps> = ({
                         <Spinner size="sm" color="primary"></Spinner> Loading Users...
                     </div>
                 ) : (
-                    <Provider
+                    <Context.Provider
                         value={{ isTodosFetching, toggleIsTodosFetching }}
                     >
                         <>
@@ -58,7 +62,7 @@ const App: FunctionComponent<IProps> = ({
                                 <Alert color="warning">No User selected</Alert>
                             )}
                         </>
-                    </Provider>
+                    </Context.Provider>
                 )}
             </div>
         </>

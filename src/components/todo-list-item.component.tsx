@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, RefObject } from 'react';
+import React, { FunctionComponent, useState, RefObject, useRef } from 'react';
 import Todo from '../models/todo.model';
 import {
     ListGroupItem,
@@ -29,7 +29,7 @@ interface IProps {
     updateTodo: (todoId: number, title: string, userId: number) => void;
 }
 
-const TodoListItem: FunctionComponent<IProps> = ({
+const TodoListItem: FunctionComponent<IProps> = React.memo(({
     todo,
     toggleCompleted,
     removeTodo,
@@ -37,9 +37,12 @@ const TodoListItem: FunctionComponent<IProps> = ({
 }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [inputValue, setInputValue] = useState(todo.title);
-    const inputRef: RefObject<HTMLInputElement> = React.createRef();
+    const inputRef: RefObject<HTMLInputElement> = useRef(null);
     const [updateTodoInProgress, setUpdateTodoInProgress] = useState(false);
     const [removeTodoInProgress, setRemoveTodoInProgress] = useState(false);
+
+
+    console.log('TodoListItem component');
 
     return (
         <ListGroupItem>
@@ -121,6 +124,9 @@ const TodoListItem: FunctionComponent<IProps> = ({
                                     !todo.completed
                                         ? setIsEditing(!isEditing)
                                         : '';
+                                        setTimeout(() => {
+                                            inputRef.current?.focus();
+                                        });
                                 }}
                             >
                                 {todo.completed ? (
@@ -158,7 +164,7 @@ const TodoListItem: FunctionComponent<IProps> = ({
             </form>
         </ListGroupItem>
     );
-};
+});
 
 const mapDispatchToProps = (dispatch: AppThunkDispatch) => {
     return {

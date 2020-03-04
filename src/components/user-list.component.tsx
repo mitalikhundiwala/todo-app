@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useState, useContext } from 'react';
 import { IAppState, AppThunkDispatch } from '../store';
 import { connect } from 'react-redux';
 import User from '../models/user.model';
@@ -6,7 +6,8 @@ import { FormGroup, Label, Input } from 'reactstrap';
 import { selectUser } from '../actions/users.action';
 import { getUsers } from '../selectors/users.selector';
 
-import { Consumer } from '../app';
+// import { Consumer } from '../app';
+import {Context}  from '../app';
 
 interface IProps {
     users: User[];
@@ -14,9 +15,11 @@ interface IProps {
 }
 
 const UserList: FunctionComponent<IProps> = ({ users, selectUser }) => {
+    const context = useContext(Context);
+
     return (
-        <Consumer>
-            {context => (
+        // <Consumer>
+            // {context => (
                 <FormGroup>
                     <Label for="usersSelect">Please select User</Label>
                     <Input
@@ -39,8 +42,8 @@ const UserList: FunctionComponent<IProps> = ({ users, selectUser }) => {
                         })}
                     </Input>
                 </FormGroup>
-            )}
-        </Consumer>
+            // )}
+        // </Consumer>
     );
 };
 

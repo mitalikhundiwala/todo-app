@@ -48,10 +48,17 @@ export const removeTodo = (
     todoId: number,
     userId: number
 ): ThunkAction<Promise<any>, IAppState, undefined, AnyAction> => {
-    return async (dispatch: Dispatch) => {
-        const todo = await TodoService.removeTodo(todoId, userId);
-        dispatch(removeTodoSuccess(todo));
-        return todo;
+    // return async (dispatch: Dispatch) => {
+    //     const todo = await TodoService.removeTodo(todoId, userId);
+    //     dispatch(removeTodoSuccess(todo));
+    //     return todo;
+    // };
+
+    return (dispatch: Dispatch) => {
+        return TodoService.removeTodo(todoId, userId).then((todo) => {
+            dispatch(removeTodoSuccess(todo));
+            return todo;
+        })
     };
 };
 

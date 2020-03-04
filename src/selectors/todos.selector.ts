@@ -1,21 +1,22 @@
-import { IState } from '../reducers/todos.reducer';
-import Todo from '../models/todo.model';
+import { createSelector } from 'reselect';
+import { IAppState } from '../store';
 
-export const getTodos = (
-    todos: IState,
-    userId: number | null
-): Todo[] | null => {
-    if (!userId) {
-        return null;
+const getTodos = (state: IAppState) => state.todos;
+const getSelectedUser = (state: IAppState) => state.ui.selectedUser;
+
+export const getTodosSelector = createSelector(
+    [getTodos, getSelectedUser],
+    (todos, userId) => {
+        if (!userId) {
+            return null;
+        }
+
+        return Object.values(todos)
+            .map(todo => {
+                return todos[todo.todoId];
+            })
+            .sort((a, b) => {
+                return a.todoId < b.todoId ? 1 : -1;
+            });
     }
-    const todoIds = Object.keys(todos).filter((todoId: string) => {
-        return todos[todoId].userId === userId;
-    });
-    return todoIds
-        .map(todoId => {
-            return todos[todoId];
-        })
-        .sort((a, b) => {
-            return a.todoId < b.todoId ? 1 : -1;
-        });
-};
+);

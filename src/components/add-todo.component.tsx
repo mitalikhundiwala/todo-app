@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, RefObject } from 'react';
+import React, { FunctionComponent, useState, RefObject, useRef } from 'react';
 import {
     Input,
     Button,
@@ -12,6 +12,7 @@ import { addTodo } from '../actions/todos.action';
 import { connect } from 'react-redux';
 import { ToggleAddTodo } from '../actions/ui.action';
 import Todo from '../models/todo.model';
+import { render } from 'react-dom';
 
 interface IProps {
     addTodo: (title: string, userId: number) => Promise<Todo>;
@@ -28,9 +29,16 @@ const AddTodo: FunctionComponent<IProps> = ({
 }) => {
     const [inputValue, setInputValue] = useState('');
     const inputRef: RefObject<HTMLInputElement> = React.createRef();
+    // const inputRef: RefObject<HTMLInputElement> = useRef(null);
     const [addTodoInProgress, setAddTodoInProgress] = useState(false);
 
+    setTimeout(() => {
+        inputRef.current?.focus();
+    });
+
+
     return (
+        
         <form
             onSubmit={async e => {
                 e.preventDefault();
@@ -77,6 +85,7 @@ const AddTodo: FunctionComponent<IProps> = ({
 };
 
 const mapStateToProps = (state: IAppState) => {
+
     return {
         userId: state.ui.selectedUser as number,
         isAddingTodo: state.ui.isAddingTodo
